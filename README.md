@@ -6,7 +6,7 @@ with respect to case sensitivity. As punctuation mark for the word breaks
 [LaTeX's](https://www.latex-project.org/) "\\-" is used.
 
 Respecting case sensitivity makes the script applicable especially for 
-technical terms. For example, the script will partition of technical 
+technical terms. For example, the script will partition technical 
 term like "ServiceContract", which consists of two words separated by
 the uppercase "C", first partition into two words "Service" and 
 "Contract". Second, both words will be hyphenated separately. In a 

@@ -33,7 +33,7 @@ and executable from TeXstudio as a macro:
 
 3. Create a new [TeXstudio macro](http://texstudio.sourceforge.net/manual/current/usermanual_en.html#SECTION33)
 with the following content (replace [HYPHEN_FOLDER] with the path of the 
-folder where you previously cloned ``hyphen.py'' to):
+folder where you previously cloned `hyphen.py` to):
 ```js
     %SCRIPT
     var selectedText = cursor.selectedText()
@@ -47,4 +47,8 @@ folder where you previously cloned ``hyphen.py'' to):
 ```
 
 For the purpose of self-containment, the script content is also part of
-the repository (see file ``ts_macro.js'').
+the repository (see file `ts_macro.js`).
+
+4. (optional) The hyphenation is based on American English (en_US).
+If you want to change the underlying language, you may alter the
+content of the `LANGUAGE` constant in `hyphen.py`.

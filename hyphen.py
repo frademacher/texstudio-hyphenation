@@ -3,7 +3,7 @@
 import pyphen
 import sys
 
-LANGUAGE = 'en_US'
+DEFAULT_LANGUAGE = 'en_US'
 
 def hyphen(word, language):    
     hyphenatedWords = []
@@ -56,6 +56,19 @@ def separateWordByUppercase(word):
     return separatedWords
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
+    if len(sys.argv) <= 1:
+        sys.exit(0)
+
+    wordToHyphen = None
+    languageToHyphen = None
+    if len(sys.argv) == 2:
         wordToHyphen = sys.argv[1]
-        print(hyphen(wordToHyphen, LANGUAGE))
+        languageToHyphen = DEFAULT_LANGUAGE
+    elif len(sys.argv) > 2:
+        wordToHyphen = sys.argv[1]
+        languageToHyphen = sys.argv[2]
+
+    try:
+        print(hyphen(wordToHyphen, languageToHyphen))
+    except KeyError as ex:
+        print()

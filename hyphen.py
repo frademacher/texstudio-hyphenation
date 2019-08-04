@@ -17,26 +17,49 @@ import pyphen
 import sys
 
 DEFAULT_LANGUAGE = 'en_US'
+NON_ALPHA_WORD_SEPARATORS = ['-', '_']
 
 def hyphen(word, language):    
     hyphenatedWords = []
 
-    separatedWords = separateWordByUppercase(word)
+    separatedWords = separateWord(word)
     hyphenator = pyphen.Pyphen(lang=language)
     for singleWord in separatedWords:
-        hyphenatedWord = hyphenator.inserted(singleWord)
-        hyphenatedWords.append(hyphenatedWord.replace('-', '\-'))
+        if not singleWord in NON_ALPHA_WORD_SEPARATORS:
+            hyphenatedWord = hyphenator.inserted(singleWord)
+            hyphenatedWords.append(hyphenatedWord.replace('-', '\-'))
+        else:
+            hyphenatedWords.append(singleWord)
 
     return '\-'.join(hyphenatedWords)
-    
-def separateWordByUppercase(word):
+
+def getNonAlphaSeparator(word):
+    for nonAlphaSeparator in NON_ALPHA_WORD_SEPARATORS:
+        if nonAlphaSeparator in word:
+            return nonAlphaSeparator
+    return None
+
+def separateWord(word):
     separatedWords = []
+    nonAlphaSeparator = getNonAlphaSeparator(word)
+    if nonAlphaSeparator is not None:
+        for separatedWord in word.split(nonAlphaSeparator):
+            separatedWords.append(separatedWord)
+            separatedWords.append(nonAlphaSeparator)
+        
+        return separatedWords[:-1]
+
     lastLetterIndex = len(word) - 1
     index = 0
     letter = word[index]
 
     while index < lastLetterIndex:
         wordBuffer = ''
+
+        while not letter.isalpha() and index < lastLetterIndex:
+            wordBuffer += letter
+            index += 1
+            letter = word[index]
 
         previousLetterWasUpper = False
         while letter.isupper() and index < lastLetterIndex:

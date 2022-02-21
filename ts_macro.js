@@ -38,8 +38,8 @@ var hyphenationCommand = null
 
 if (wordToHyphen) {
 	hyphenationCommand = "python3 " +
-		HYPHENATION_SCRIPT + " " +
-	wordToHyphen
+		HYPHENATION_SCRIPT + " \"" +
+	wordToHyphen + "\""
 
 	if (languageToHyphen)
 		hyphenationCommand += " " +

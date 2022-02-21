@@ -17,7 +17,8 @@ import pyphen
 import sys
 
 DEFAULT_LANGUAGE = 'en_US'
-NON_ALPHA_WORD_SEPARATORS = ['-', '_']
+NON_ALPHA_WORD_SEPARATORS = ['-', '_', '.', ' ']
+NO_HYPHEN_WORD_SEPARATORS = [' ', '-']
 
 def hyphen(word, language):    
     hyphenatedWords = []
@@ -25,13 +26,27 @@ def hyphen(word, language):
     separatedWords = separateWord(word)
     hyphenator = pyphen.Pyphen(lang=language)
     for singleWord in separatedWords:
-        if not singleWord in NON_ALPHA_WORD_SEPARATORS:
+        if not singleWord in NON_ALPHA_WORD_SEPARATORS \
+            and not singleWord in NO_HYPHEN_WORD_SEPARATORS:
             hyphenatedWord = hyphenator.inserted(singleWord)
             hyphenatedWords.append(hyphenatedWord.replace('-', '\-'))
         else:
             hyphenatedWords.append(singleWord)
 
-    return '\-'.join(hyphenatedWords)
+    result = ''
+    addHyphenationSign = False
+    for hyphenatedWord in hyphenatedWords:
+        if addHyphenationSign \
+            and hyphenatedWord not in NO_HYPHEN_WORD_SEPARATORS:
+            result += '\-'
+
+        result += hyphenatedWord
+        addHyphenationSign = hyphenatedWord not in NO_HYPHEN_WORD_SEPARATORS
+
+    if result.endswith('\-'):
+        result = result[:-2]
+
+    return result
 
 def getNonAlphaSeparator(word):
     for nonAlphaSeparator in NON_ALPHA_WORD_SEPARATORS:
